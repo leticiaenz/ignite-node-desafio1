@@ -11,6 +11,17 @@ app.use(express.json());
 const users = [];
 
 function checksExistsUserAccount(request, response, next) {
+  const { name } = request.headers;
+
+  const user = users.find((user) => user.name === name);
+
+  if(!user) {
+    return response.status(400).json({error: "User not found"});
+  }
+
+  request.user = user;
+
+  return next();
 
 }
 
@@ -19,10 +30,10 @@ app.post('/users', (request, response) => {
   const {name, username} = request.body;
 
   users.push({ 
-      id: 'uuid', // precisa ser um uuid
-      name: 'Danilo Vieira', 
-      username: 'danilo', 
-      todos: []
+      id: uuidv4(), // precisa ser um uuid
+      name, 
+      username, 
+      todos: [],
     });
   return response.status(201).send();
 
