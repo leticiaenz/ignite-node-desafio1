@@ -16,7 +16,7 @@ function checksExistsUserAccount(request, response, next) {
   const user = users.find((user) => user.username === username);
 
   if(!user) {
-    return response.status(400).json({error: "Username not found"});
+    return response.status(404).json({error: "Username not found"});
   }
 
   request.user = user;
@@ -103,7 +103,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   if(!todo) {
     return response.status(404).json({ error: 'Todo not find'}); 
   }
-  
+
   todo.done = true;
 
   return response.json(todo);
